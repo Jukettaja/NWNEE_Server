@@ -1,0 +1,32 @@
+{
+  "name": "nwnee_server",
+  "version": "1.0.0",
+  "description": "Nevewinter Nights: Enhanced Edition Dedicated Server for Node.js",
+  "main": "server.js",
+  "scripts": {
+    "test": "start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hartontw/NWNEE_Server.git"
+  },
+  "keywords": [
+    "nwn",
+    "nwnee",
+    "neverwinter",
+    "server",
+    "dedicated",
+    "node",
+    "js"
+  ],
+  "author": "Daniel Martínez Priego",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hartontw/NWNEE_Server/issues"
+  },
+  "homepage": "https://github.com/hartontw/NWNEE_Server#readme",
+  "dependencies": {
+    "adm-zip": "^0.4.13",
+    "request": "^2.88.0"
+  }
+}
