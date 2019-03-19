@@ -1,11 +1,11 @@
 const fs = require('fs');
 
-const logsPath = './logs/'; //Symblinked, if not /home/YOUR_USER/.local/share/Neverwinter Nights/logs.0/
-const logs = JSON.parse(fs.readFileSync('logs.json'));
+const logsPath = './logs.0/'; //Symblinked, if not /home/YOUR_USER/.local/share/Neverwinter Nights/logs.0/
+const logs = fs.existsSync('logs.json') ? JSON.parse(fs.readFileSync('logs.json')) : {};
 
 fs.watch(logsPath, (event, filename) => {
     if (filename) {
-        const content = tracks[filename] || '';
+        const content = logs[filename] || '';
         const file = fs.readFileSync(logsPath + filename).toString();
         const changes = file.replace(content, '').split('\n');
         changes.forEach(change => {
