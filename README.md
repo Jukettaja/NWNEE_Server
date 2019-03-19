@@ -2,8 +2,10 @@
 
 ### Install
 
-```
+```bash
 git clone https://github.com/hartontw/NWNEE_Server.git
+cd NWNEE_Server
+npm install
 ```
 
 Create symlink to nwn logs in root folder. e.g.
