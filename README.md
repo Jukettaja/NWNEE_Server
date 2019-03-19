@@ -8,17 +8,13 @@ cd NWNEE_Server
 npm install
 ```
 
-Create symlink to nwn logs in root folder. e.g.
-```
-ln -s /home/YOUR_USER/.local/share/Neverwinter Nights/logs.0/ /home/YOUR_USER/NWNEE_Server/
-```
-
 Create a ```config.json``` file in the root folder. If you want to override the server parameters located in ```nwnplayer.ini``` you can fill parameters object.
 
 #### Example ```config.json``` file:
 ```json
 {
     "version": "8186",
+    "install_dir": "/home/YOUR_USER/.local/share/Neverwinter Nights/",
     "params": {
         "-servername": "NWN:EE Dedicated Server",
         "-module": "ModuleName",

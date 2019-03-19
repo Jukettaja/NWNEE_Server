@@ -1,6 +1,7 @@
 const exec = require('child_process').execFile;
 const config = require('./config.json');
 const installer = require('./installer');
+const logger = require('./logger');
 
 installer(config.version)
     .then(msg => {
@@ -23,6 +24,6 @@ installer(config.version)
         server.stdout.on('data', data => console.log(data.toString()));
         server.stderr.on('data', data => console.error(data.toString()));
 
-        require('./logger');
+        logger(config.install_dir);
     })
     .catch(err => console.error(err));
