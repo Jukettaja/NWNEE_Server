@@ -28,3 +28,5 @@ Create a ```config.json``` file in the root folder. If you want to override the 
     }
 }
 ```
+
+Available versions: https://forums.beamdog.com/discussion/67157/server-download-packages-and-docker-support
