@@ -1,6 +1,17 @@
 # NWN:EE Dedicated Server for Node.js
 
-You have to create a ```config.json``` file in the root folder. If you want to override the start parameters located in ```nwnplayer.ini``` you can fill parameters object.
+### Install
+
+```
+git clone https://github.com/hartontw/NWNEE_Server.git
+```
+
+Create symlink to nwn logs in root folder. e.g.
+```
+ln -s /home/YOUR_USER/.local/share/Neverwinter Nights/logs.0/ /home/YOUR_USER/NWNEE_Server/
+```
+
+Create a ```config.json``` file in the root folder. If you want to override the server parameters located in ```nwnplayer.ini``` you can fill parameters object.
 
 #### Example ```config.json``` file:
 ```json

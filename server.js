@@ -6,8 +6,6 @@ installer(config.version)
     .then(msg => {
         console.log(msg);
 
-        require('./logger');
-
         const cwd = `./builds/${config.version}/bin/linux-x86/`;
         const params = () => {
             const prms = [];
@@ -24,5 +22,7 @@ installer(config.version)
         const server = exec('./nwserver-linux', params(), { cwd });
         server.stdout.on('data', data => console.log(data.toString()));
         server.stderr.on('data', data => console.error(data.toString()));
+
+        require('./logger');
     })
     .catch(err => console.error(err));
