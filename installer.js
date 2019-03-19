@@ -8,6 +8,7 @@ module.exports = function(version) {
 
     return new Promise((resolve, reject) => {
         if (!fs.existsSync(path)) {
+            console.log(`${version} Downloading...`)
             request({
                 url: url,
                 method: 'GET',
@@ -15,11 +16,12 @@ module.exports = function(version) {
             }, (rErr, resp, body) => {
                 if (!rErr) {
                     const zip = new AdmZip(body);
+                    console.log(`${version} Unzipping...`)
                     zip.extractAllToAsync(path, true, zErr => {
                         if (!zErr) {
                             fs.chmod(path + '/bin/linux-x86/nwserver-linux', 0o755, cErr => {
                                 if (!cErr)
-                                    resolve(`Server version ${version} downloaded and extracted.`);
+                                    resolve({ msg: `Server version downloaded and extracted in ${path}`, installed: true });
                                 else
                                     reject(cErr);
                             });
@@ -27,6 +29,6 @@ module.exports = function(version) {
                     });
                 } else reject(rErr);
             });
-        } else resolve(`Version ${version} already installed.`);
+        } else resolve({ msg: `Version ${version} already installed.` });
     });
 };

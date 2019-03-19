@@ -3,12 +3,24 @@ const path = require('path');
 
 const logs = fs.existsSync('logs.json') ? JSON.parse(fs.readFileSync('logs.json')) : {};
 
-module.exports = function(install_dir) {
+async function watch(install_dir) {
+    console.log("Watching log files...");
+
+    while (!fs.existsSync(install_dir)) {
+        const timer = ms => new Promise(res => setTimeout(res, ms));
+        await timer(5000);
+    }
+
     const logsPath = path.join(install_dir, '/logs.0/');
-    setTimeout(fs.watch(logsPath, (event, filename) => {
+
+    fs.watch(logsPath, (event, filename) => {
+
         if (filename) {
+
             const content = logs[filename] || '';
+
             const file = fs.readFileSync(path.join(logsPath, filename)).toString();
+
             const changes = file.replace(content, '').split('\n');
             changes.forEach(change => {
                 if (filename.toLowerCase().includes('error'))
@@ -16,8 +28,14 @@ module.exports = function(install_dir) {
                 else
                     console.log(change);
             });
+
             logs[filename] = file;
+
             fs.writeFileSync('logs.json', JSON.stringify(logs));
+
         } else console.log(event);
-    }), 5000);
-};
+
+    });
+}
+
+module.exports = watch;

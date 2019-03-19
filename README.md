@@ -22,7 +22,7 @@ Create a ```config.json``` file in the root folder. If you want to override the 
         "-publicserver": 0,
         "-servervault": 1,
         "-dmpassword": "password",
-        "-autosaveinterval: 1,
+        "-autosaveinterval": 1
     }
 }
 ```
