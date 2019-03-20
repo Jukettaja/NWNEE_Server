@@ -3,13 +3,8 @@ const path = require('path');
 
 const logs = fs.existsSync('logs.json') ? JSON.parse(fs.readFileSync('logs.json')) : {};
 
-async function watch(install_dir) {
+function watch(install_dir) {
     console.log("Watching log files...");
-
-    while (!fs.existsSync(install_dir)) {
-        const timer = ms => new Promise(res => setTimeout(res, ms));
-        await timer(5000);
-    }
 
     const logsPath = path.join(install_dir, '/logs.0/');
 

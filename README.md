@@ -15,16 +15,21 @@ Create a ```config.json``` file in the root folder. If you want to override the 
 {
     "version": "8186",
     "install_dir": "/home/YOUR_USER/.local/share/Neverwinter Nights/",
+    "module": "https://neverwintervault.org/rolovault/projects/nwn1/modules/1570/Nordock.zip.zip",
     "params": {
-        "-servername": "NWN:EE Dedicated Server",
-        "-module": "ModuleName",
-        "-maxclients": 6,
-        "-publicserver": 0,
-        "-servervault": 1,
-        "-dmpassword": "password",
-        "-autosaveinterval": 1
+        "servername": "NWN:EE Dedicated Server",
+        "module": "ModuleName",
+        "maxclients": 6,
+        "publicserver": 0,
+        "servervault": 1,
+        "dmpassword": "password",
+        "autosaveinterval": 1
     }
 }
 ```
+
+"module" entry accepts ```.zip``` or ```.mod``` files. 
+If "params.module" is set, searchs in ```.zip``` file for any entry with the same name and extract it, if not is found, extracts the first file with ```.mod``` extension.
+If "params.module" is not set, searchs for first file with ```.mod``` extension and save file name as module parameter.
 
 Available versions: https://forums.beamdog.com/discussion/67157/server-download-packages-and-docker-support

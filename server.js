@@ -1,3 +1,4 @@
+const fs = require('fs');
 const exec = require('child_process').execFile;
 const config = require('./config.json');
 const installer = require('./installer');
@@ -5,31 +6,66 @@ const logger = require('./logger');
 
 const execFile = './nwserver-linux';
 const cwd = `./builds/${config.version}/bin/linux-x86/`;
-const params = () => {
+const params = (mod) => {
     const prms = [];
 
     const keys = Object.keys(config.params);
     keys.forEach(key => {
-        prms.push(key);
-        prms.push(config.params[key]);
+        if (key !== 'module') {
+            prms.push('-' + key.toLocaleLowerCase());
+            prms.push(config.params[key]);
+        }
     });
+
+    if (mod) {
+        prms.push('-module');
+        prms.push(mod);
+    }
 
     return prms;
 }
 
-installer(config.version)
-    .then(res => {
-        console.log(res.msg);
+async function firstInstall(timeOut, timeSpan) {
+    try {
+        console.log("This is a fresh install. Creating working directory...");
+        const sleep = (ms) => new Promise(res => setTimeout(res, ms));
+        const server = exec(execFile, [], { cwd });
+        while (timeOut > 0 && !fs.existsSync(config.install_dir)) {
+            timeOut -= timeSpan
+            await sleep(timeSpan);
+        }
+        server.stdin.end();
 
-        const server = exec(execFile, params(), { cwd });
+        if (timeOut <= 0)
+            throw new Error('Something went wrong at first install. Try to run the server manually.');
 
-        server.stdout.on('data', data => console.log(data.toString()));
-        server.stdout.on('error', err => console.error(err));
-        server.stdout.on('close', () => console.log('Server closed.'));
-        server.stdout.on('end', () => console.log('Server ended.'));
+    } catch (error) { throw error }
+}
 
-        server.stderr.on('data', data => console.error(data.toString()));
+installer.server(config.version)
+    .then(async res => {
+        try {
+            console.log(res);
 
-        logger(config.install_dir);
+            if (!fs.existsSync(config.install_dir))
+                await firstInstall(30000, 5000);
+
+            logger(config.install_dir);
+
+            const modRes = config.module ? await installer.module(config) : config.params.module;
+
+            console.log("Starting server...");
+            const server = exec(execFile, params(modRes), { cwd });
+
+            server.stdout.on('data', data => console.log(data.toString()));
+            server.stdout.on('error', err => console.error(err));
+            server.stdout.on('close', () => console.log('Server closed.'));
+            server.stdout.on('end', () => console.log('Server ended.'));
+
+            server.stderr.on('data', data => console.error(data.toString()));
+
+        } catch (error) {
+            console.error(error.message);
+        }
     })
-    .catch(err => console.error(err));
+    .catch(error => console.error(error.message));
