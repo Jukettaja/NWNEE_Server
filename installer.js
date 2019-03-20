@@ -103,7 +103,7 @@ function installServer(version) {
             downloadAndUnzip(serverUrl, buildPath)
                 .then(() => {
 
-                    fs.chmod(buildPath + '/bin/linux-x86/nwserver-linux', 0o755, err => {
+                    fs.chmod(path.join(buildPath, '/bin/linux-x86/nwserver-linux'), 0o755, err => {
                         if (!err)
                             resolve(`Server version downloaded and extracted in ${buildPath}`);
                         else
