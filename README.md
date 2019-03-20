@@ -2,6 +2,13 @@
 
 ### Install
 
+i386 architecture and libs are required:
+```bash
+sudo dpkg --add-architecture i386
+sudo apt install lib32stdc++6 libc6-i386
+```
+
+Download repository and install node_modules:
 ```bash
 git clone https://github.com/hartontw/NWNEE_Server.git
 cd NWNEE_Server
