@@ -101,15 +101,19 @@ function installServer(version) {
             console.log(`Installing build ${version}`);
 
             downloadAndUnzip(serverUrl, buildPath)
-                .then(() => {
-
-                    fs.chmod(path.join(buildPath, '/bin/linux-x86/nwserver-linux'), 0o755, err => {
+                .then(async () => {
+                    let tries = 0;
+                    const sleep = (ms) => new Promise(res => setTimeout(res, ms));
+                    const server = buildPath + '/bin/linux-x86/nwserver-linux';
+                    while (tries++ < 3 && !fs.existsSync(server)) {
+                        await sleep(1000);
+                    }
+                    fs.chmod(server, 0o755, err => {
                         if (!err)
                             resolve(`Server version downloaded and extracted in ${buildPath}`);
                         else
                             reject(err);
                     });
-
                 })
                 .catch(err => reject(err));
 

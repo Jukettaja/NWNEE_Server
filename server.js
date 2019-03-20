@@ -34,12 +34,14 @@ async function firstInstall(timeOut, timeSpan) {
             timeOut -= timeSpan
             await sleep(timeSpan);
         }
-        server.stdin.end();
+        server.stdin.end();        
 
         if (timeOut <= 0)
             throw new Error('Something went wrong at first install. Try to run the server manually.');
 
-    } catch (error) { throw error }
+        await sleep(1000);
+
+    } catch (error) { throw error; }
 }
 
 installer.server(config.version)
@@ -48,14 +50,12 @@ installer.server(config.version)
             console.log(res);
 
             if (!fs.existsSync(config.install_dir))
-                await firstInstall(30000, 5000);
-
-            logger(config.install_dir);
+                await firstInstall(30000, 5000);            
 
             const modRes = config.module ? await installer.module(config) : config.params.module;
 
             console.log("Starting server...");
-            const server = exec(execFile, params(modRes), { cwd });
+            const server = exec(execFile, params(modRes), { cwd });            
 
             server.stdout.on('data', data => console.log(data.toString()));
             server.stdout.on('error', err => console.error(err));
@@ -64,8 +64,10 @@ installer.server(config.version)
 
             server.stderr.on('data', data => console.error(data.toString()));
 
+            logger(config.install_dir);
+
         } catch (error) {
-            console.error(error.message);
+            console.error(error);
         }
     })
-    .catch(error => console.error(error.message));
+    .catch(error => console.error(error));
