@@ -1,4 +1,4 @@
-# NWN:EE Dedicated Server for Node.js
+# NWN:EE Linux dedicated server middleware in Node.js
 
 ### Install
 
